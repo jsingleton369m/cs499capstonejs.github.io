@@ -1,0 +1,63 @@
+# CS340 Animal Shelter
+
+from pymongo import MongoClient
+from bson.objectid import ObjectId
+
+class AnimalShelter(object):
+    """ CRUD operations for Animal collection in MongoDB """
+    
+    def __init__(self):
+        # Initializing the MongoClient. This helps to
+        # access the MongoDB databases and collections.
+        # This is hard-wired to use the aac database, the
+        # animals collection, and the aac user.
+        # Definitions of the connection string variables are
+        # unique to the individual Apporto environment.
+        # 
+        # You must edit the connection variables below to reflect
+        # your own instance of MongoDB!
+        # Connection Variables
+        #
+        USER = 'aacuser'
+        PASS = '123'
+        HOST = 'nv-desktop-services.apporto.com'
+        PORT = 31580
+        DB = 'aac'
+        COL = 'animals'
+        self.client = MongoClient('mongodb://%s:%s@%s:%d' % (USER, PASS, HOST, PORT))
+        self.database = self.client['%s' % (DB)]
+        self.collection = self.database['%s' % (COL)]
+        
+        print("Connection Successful")
+        
+    def create(self, data):
+        if data is not None:
+            inserted = self.database.animals.insert_one(data)
+            if inserted != 0:
+                return True
+            return False
+        else:
+            raise Exception("Nothing to save, because data parameter is empty")
+                
+    def read(self, findData):
+        if findData is not None:
+             inputData = self.database.animals.find(findData, {"_id": False})
+        else:
+            inputData = self.database.animals.find({}, {"_id": False})
+        return inputData
+                
+    def update(self, inputData, newData):
+        if inputData and newData is not None:
+             updated = self.database.animals.update_many(inputData, {"$set": newData})
+        else:
+            raise Exception("Nothing to update, inputData or newData parameters are empty.")
+        return updated.modified_count
+                    
+                
+    def delete(self, removeData):
+        if removeData is not None:
+             deleted = self.database.animals.delete_many(removeData)
+        else:
+             raise Exception("nothing to delete, removeData parameter is empty")
+        return deleted.deleted_count
+                    

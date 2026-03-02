@@ -1,1 +1,98 @@
-dd
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CS-260 Binary Search Tree</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: white;
+            color: #b30000;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #b30000;
+        }
+
+        pre {
+            background: #b30000;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: monospace;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>CS-260 Binary Search Tree</h1>
+
+<p>
+This project implements a Binary Search Tree to store and manage bid data.
+</p>
+
+<h2>Code</h2>
+
+<pre><code class="language-cpp">
+//============================================================================
+// Name        : BinarySearchTree.cpp
+// Author      : Joshua Singleton
+// Description : Binary Search Tree Implementation
+//============================================================================
+
+#include &lt;iostream&gt;
+#include &lt;time.h&gt;
+#include "CSVparser.hpp"
+
+using namespace std;
+
+struct Bid {
+    string bidId;
+    string title;
+    string fund;
+    double amount;
+    Bid() { amount = 0.0; }
+};
+
+struct Node {
+    Bid bid;
+    Node* left;
+    Node* right;
+
+    Node() {
+        left = nullptr;
+        right = nullptr;
+    }
+
+    Node(Bid aBid) : Node() {
+        this->bid = aBid;
+    }
+};
+
+class BinarySearchTree {
+
+private:
+    Node* root;
+
+public:
+    BinarySearchTree() {
+        root = nullptr;
+    }
+
+    void Insert(Bid bid) {
+        if (root == nullptr) {
+            root = new Node(bid);
+        }
+    }
+};
+</code></pre>
+
+
+</body>
+</html>

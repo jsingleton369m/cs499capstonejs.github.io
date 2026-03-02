@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>CS-360 Calendar App</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #ffffff; /* white page */
+        color: #b30000; /* red text */
+        padding: 24px;
+    }
+
+    h1 {
+        color: #b30000;
+    }
+
+    pre {
+        background: #b30000; /* red code box */
+        color: #ffffff; /* white code text */
+        padding: 16px;
+        border-radius: 10px;
+        overflow-x: auto;
+    }
+
+    code {
+        font-family: monospace;
+    }
+
+    a {
+        color: #b30000;
+        font-weight: bold;
+    }
+</style>
+   
+</head>
+<body>
+
+<h1>CS-360 Calendar App</h1>
+<p>MainActivity.java (snippet)</p>
+
+<pre><code class="language-java">
+package com.zybooks.singleton_3_2assignment;
+
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorManager;
+import android.os.Bundle;
+import android.text.TextUtils;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+import android.widget.Button;
+import android.view.View;
+import android.widget.GridView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+
+    Button buttonSayHello;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main);
+        getSupportActionBar().hide();
+
+        String nameText = null;
+        if (TextUtils.isEmpty(nameText)) {
+
+            buttonSayHello = findViewById(R.id.buttonSayHello);
+            buttonSayHello.setEnabled(false);
+
+            buttonSayHello.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(MainActivity.this, "Clicked Button", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        GridView gridview = findViewById(R.id.gridview);
+        gridview.setAdapter(new ImageAdapter(this));
+
+        // NOTE: Sensor code should NOT be declared inside onCreate like "private SensorManager ..."
+        // Put fields at class level, implement SensorEventListener, and keep one onCreate().
+    }
+}
+</code></pre>
+
+
+</body>
+</html>

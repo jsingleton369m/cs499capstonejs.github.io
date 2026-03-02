@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CS340 Animal Shelter</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #ffffff; /* white page */
+        color: #b30000; /* red text */
+        padding: 24px;
+    }
+
+    h1 {
+        color: #b30000;
+    }
+
+    pre {
+        background: #b30000; /* red code box */
+        color: #ffffff; /* white code text */
+        padding: 16px;
+        border-radius: 10px;
+        overflow-x: auto;
+    }
+
+    code {
+        font-family: monospace;
+    }
+
+    a {
+        color: #b30000;
+        font-weight: bold;
+    }
+</style>
+   
+</head>
+
+<body>
+
+<h1>CS340 Animal Shelter</h1>
+
+<p>
+This project demonstrates CRUD operations using MongoDB and Python.
+</p>
+
+<h2>Code</h2>
+
+<pre><code>
+from pymongo import MongoClient
+from bson.objectid import ObjectId
+
+class AnimalShelter(object):
+    """ CRUD operations for Animal collection in MongoDB """
+    
+    def __init__(self):
+        USER = 'aacuser'
+        PASS = '123'
+        HOST = 'nv-desktop-services.apporto.com'
+        PORT = 31580
+        DB = 'aac'
+        COL = 'animals'
+
+        self.client = MongoClient(
+            'mongodb://%s:%s@%s:%d' % (USER, PASS, HOST, PORT)
+        )
+        self.database = self.client[DB]
+        self.collection = self.database[COL]
+        
+        print("Connection Successful")
+        
+    def create(self, data):
+        if data is not None:
+            inserted = self.database.animals.insert_one(data)
+            return inserted.inserted_id is not None
+        else:
+            raise Exception("Nothing to save")
+
+    def read(self, findData):
+        if findData is not None:
+            return self.database.animals.find(findData, {"_id": False})
+        else:
+            return self.database.animals.find({}, {"_id": False})
+                
+    def update(self, inputData, newData):
+        if inputData and newData is not None:
+            updated = self.database.animals.update_many(
+                inputData,
+                {"$set": newData}
+            )
+            return updated.modified_count
+        else:
+            raise Exception("Nothing to update")
+                    
+    def delete(self, removeData):
+        if removeData is not None:
+            deleted = self.database.animals.delete_many(removeData)
+            return deleted.deleted_count
+        else:
+            raise Exception("Nothing to delete")
+</code></pre>
+
+
+
+</body>
+</html>
+      

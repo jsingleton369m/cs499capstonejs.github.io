@@ -1,5 +1,22 @@
-#CS-360 Calendar app
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>CS-360 Calendar App</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#0f172a; color:#e2e8f0; padding: 24px; }
+    h1 { color:#38bdf8; }
+    pre { background:#1e293b; padding:16px; border-radius:10px; overflow-x:auto; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size: 14px; }
+    a { color:#38bdf8; }
+  </style>
+</head>
+<body>
 
+<h1>CS-360 Calendar App</h1>
+<p>MainActivity.java (snippet)</p>
+
+<pre><code class="language-java">
 package com.zybooks.singleton_3_2assignment;
 
 import android.hardware.Sensor;
@@ -13,15 +30,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
 import android.widget.Button;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 public class MainActivity extends AppCompatActivity {
 
     Button buttonSayHello;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,88 +49,31 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         String nameText = null;
-        if(TextUtils.isEmpty(nameText)) {
-            //string is empty
-
+        if (TextUtils.isEmpty(nameText)) {
 
             buttonSayHello = findViewById(R.id.buttonSayHello);
-
             buttonSayHello.setEnabled(false);
 
             buttonSayHello.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view)
-                {
+                public void onClick(View view) {
                     Toast.makeText(MainActivity.this, "Clicked Button", Toast.LENGTH_SHORT).show();
                 }
-
-
             });
         }
 
-        GridView gridview = (GridView) findViewById(R.id.gridview);
+        GridView gridview = findViewById(R.id.gridview);
         gridview.setAdapter(new ImageAdapter(this));
 
-        private SensorManager sensorManager;
-        private Sensor accelerometer;
-        private TextView sensorDataTextView;
-
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
-
-            // Initialize SensorManager
-            sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-            accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
-            // Reference the TextView from the layout
-            sensorDataTextView = findViewById(R.id.sensorData);
-
-            if (accelerometer == null) {
-                sensorDataTextView.setText(R.string.accelerometer_found);
-            }
-            else {
-                sensorDataTextView.setText(R.string.accelerometer_not_available);
-            }
-        }
-
-        @Override
-        protected void onResume() {
-            super.onResume();
-            if (accelerometer != null) {
-                sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-            }
-        }
-
-        @Override
-        protected void onPause() {
-            super.onPause();
-            sensorManager.unregisterListener(this);
-        }
-
-        @Override
-        public void onSensorChanged(SensorEvent event) {
-            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-                float x = event.values[0];
-                float y = event.values[1];
-                float z = event.values[2];
-
-                String sensorOutput = "X: " + x + "\nY: " + y + "\nZ: " + z;
-                sensorDataTextView.setText(sensorOutput);
-            }
-        }
-
-        @Override
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {
-            // Not used, required to implement SensorEventListener
-        }
+        // NOTE: Sensor code should NOT be declared inside onCreate like "private SensorManager ..."
+        // Put fields at class level, implement SensorEventListener, and keep one onCreate().
     }
+}
+</code></pre>
 
-    };
+<p><a href="/">⬅ Back to Home</a></p>
 
-
-
-
+</body>
+</html>
 
 

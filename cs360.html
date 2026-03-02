@@ -1,0 +1,117 @@
+#CS-360 Calendar app
+
+package com.zybooks.singleton_3_2assignment;
+
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorManager;
+import android.os.Bundle;
+import android.text.TextUtils;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import android.widget.Button;
+import android.text.TextWatcher;
+import android.view.View;
+import android.widget.GridView;
+import android.widget.TextView;
+import android.widget.Toast;
+public class MainActivity extends AppCompatActivity {
+
+    Button buttonSayHello;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main);
+        getSupportActionBar().hide();
+
+        String nameText = null;
+        if(TextUtils.isEmpty(nameText)) {
+            //string is empty
+
+
+            buttonSayHello = findViewById(R.id.buttonSayHello);
+
+            buttonSayHello.setEnabled(false);
+
+            buttonSayHello.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view)
+                {
+                    Toast.makeText(MainActivity.this, "Clicked Button", Toast.LENGTH_SHORT).show();
+                }
+
+
+            });
+        }
+
+        GridView gridview = (GridView) findViewById(R.id.gridview);
+        gridview.setAdapter(new ImageAdapter(this));
+
+        private SensorManager sensorManager;
+        private Sensor accelerometer;
+        private TextView sensorDataTextView;
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
+
+            // Initialize SensorManager
+            sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+            accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+            // Reference the TextView from the layout
+            sensorDataTextView = findViewById(R.id.sensorData);
+
+            if (accelerometer == null) {
+                sensorDataTextView.setText(R.string.accelerometer_found);
+            }
+            else {
+                sensorDataTextView.setText(R.string.accelerometer_not_available);
+            }
+        }
+
+        @Override
+        protected void onResume() {
+            super.onResume();
+            if (accelerometer != null) {
+                sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+            }
+        }
+
+        @Override
+        protected void onPause() {
+            super.onPause();
+            sensorManager.unregisterListener(this);
+        }
+
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+                float x = event.values[0];
+                float y = event.values[1];
+                float z = event.values[2];
+
+                String sensorOutput = "X: " + x + "\nY: " + y + "\nZ: " + z;
+                sensorDataTextView.setText(sensorOutput);
+            }
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+            // Not used, required to implement SensorEventListener
+        }
+    }
+
+    };
+
+
+
+
+
+
